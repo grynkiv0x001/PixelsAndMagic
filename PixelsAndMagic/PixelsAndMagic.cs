@@ -1,15 +1,19 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using GameLibrary;
 
 namespace PixelsAndMagic;
 
-public class PixelsAndMagic : GameLibrary.Core
+public class PixelsAndMagic : Core
 {
     private const int WINDOW_WIDTH = 1280;
     private const int WINDOW_HEIGHT = 720;
     private const bool FULLSCREEN = false;
     
-    private Texture2D _playerTexture;
+    private Sprite _playerSprite;
+    private Sprite _enemySprite;
 
     public PixelsAndMagic() : base("PixelsAndMagic", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN)
     {
@@ -18,7 +22,13 @@ public class PixelsAndMagic : GameLibrary.Core
 
     protected override void LoadContent()
     {
-        _playerTexture = Content.Load<Texture2D>("Images/wizard");
+        SpriteSheet spriteSheet = SpriteSheet.FromFile(Content, "Images/spritesheet.xml");
+
+        spriteSheet.AddRegion("Wizard", 32, 0, 32, 32);
+        spriteSheet.AddRegion("Rock", 0, 0, 32, 32);
+
+        _playerSprite = spriteSheet.CreateSprite("Wizard");
+        _enemySprite = spriteSheet.CreateSprite("Rock");
         
         base.LoadContent();
     }
@@ -27,7 +37,8 @@ public class PixelsAndMagic : GameLibrary.Core
     {
         SpriteBatch.Begin();
         
-        SpriteBatch.Draw(_playerTexture, Vector2.Zero, Color.White);
+        _playerSprite.Draw(SpriteBatch, Vector2.Zero);
+        _enemySprite.Draw(SpriteBatch, new Vector2(100, 0));
         
         SpriteBatch.End();
         

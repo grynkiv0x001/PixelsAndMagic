@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>Images/basic-sheet</Texture>
+    <Regions>
+        <Region name="Wizard" x="0" y="0" width="32" height="32" />
+        <Region name="Enemy" x="32" y="0" width="32" height="32" />
+    </Regions>
+</TextureAtlas>
