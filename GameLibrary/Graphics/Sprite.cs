@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GameLibrary;
+namespace GameLibrary.Graphics;
 
 public class Sprite
 {
@@ -36,7 +36,7 @@ public class Sprite
     /// </remarks>
     public float Width => Region.Width * Scale.X;
     
-        /// <summary>
+    /// <summary>
     /// Gets the Height (in pixels)
     /// </summary>
     /// <remarks>

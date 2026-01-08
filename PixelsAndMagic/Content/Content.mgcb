@@ -25,10 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:Images/basic-sheet.png
 
+#begin Images/player-spritesheet.xml
+/copy:Images/player-spritesheet.xml
+
 #begin Images/spritesheet.xml
 /copy:Images/spritesheet.xml
 
-#begin Images/vampire-rock.png
+#begin Images/wizard-sheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -38,17 +41,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/vampire-rock.png
-
-#begin Images/wizard.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/wizard.png
+/build:Images/wizard-sheet.png
 

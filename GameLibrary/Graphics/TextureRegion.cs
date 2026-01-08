@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GameLibrary;
+namespace GameLibrary.Graphics;
 
 /// <summary>
 /// Represents a rectangular region within a texture

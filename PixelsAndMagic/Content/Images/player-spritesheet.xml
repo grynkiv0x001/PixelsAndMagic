@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>Images/wizard-sheet</Texture>
+    <Regions>
+        <Region name="Wizard-1" x="0" y="0" width="32" height="32" />
+        <Region name="Wizard-2" x="32" y="0" width="32" height="32" />
+        <Region name="Wizard-3" x="64" y="0" width="32" height="32" />
+        <Region name="Wizard-4" x="96" y="0" width="32" height="32" />
+    </Regions>
+    <Animations>
+        <Animation name="wizard-animation" delay="1000">
+            <Frame region="Wizard-1" />
+            <Frame region="Wizard-2" />
+            <Frame region="Wizard-3" />
+            <Frame region="Wizard-4" />
+        </Animation>
+    </Animations>
+</TextureAtlas>
+
