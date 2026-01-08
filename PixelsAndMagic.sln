@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelsAndMagic", "PixelsAndMagic\PixelsAndMagic.csproj", "{819246AC-5F63-429F-8F83-020BE2BC9CAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibrary", "GameLibrary\GameLibrary.csproj", "{DD004328-0992-4B35-A171-7BC3B6424848}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{819246AC-5F63-429F-8F83-020BE2BC9CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819246AC-5F63-429F-8F83-020BE2BC9CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819246AC-5F63-429F-8F83-020BE2BC9CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819246AC-5F63-429F-8F83-020BE2BC9CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD004328-0992-4B35-A171-7BC3B6424848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD004328-0992-4B35-A171-7BC3B6424848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD004328-0992-4B35-A171-7BC3B6424848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD004328-0992-4B35-A171-7BC3B6424848}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
