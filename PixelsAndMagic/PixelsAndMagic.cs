@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using GameLibrary;
 using GameLibrary.Graphics;
 
+using PixelsAndMagic.Entities;
+
 namespace PixelsAndMagic;
 
 public class PixelsAndMagic : Core
@@ -12,7 +14,7 @@ public class PixelsAndMagic : Core
     private const int WINDOW_HEIGHT = 720;
     private const bool FULLSCREEN = false;
     
-    private AnimatedSprite _playerSprite;
+    private Player _player;
     private Sprite _enemySprite;
 
     public PixelsAndMagic() : base("PixelsAndMagic", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN)
@@ -29,17 +31,19 @@ public class PixelsAndMagic : Core
         _enemySprite.Scale = new Vector2(4.0f, 4.0f);
         
         // Player (Wizard) sprite loading
-        SpriteSheet playerSheet  = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
+        SpriteSheet playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
         
-        _playerSprite = playerSheet.CreateAnimatedSprite("wizard-animation");
-        _playerSprite.Scale = new Vector2(4.0f, 4.0f);
+        var playerSprite = playerSheet.CreateAnimatedSprite("wizard-animation");
+        playerSprite.Scale = new Vector2(4.0f, 4.0f);
+        
+        _player = new Player(playerSprite, new Vector2(10, 0));
         
         base.LoadContent();
     }
 
     protected override void Update(GameTime gameTime)
     {
-        _playerSprite.Update(gameTime);
+        _player.Update(gameTime);
         
         base.Update(gameTime);
     }
@@ -49,7 +53,7 @@ public class PixelsAndMagic : Core
         GraphicsDevice.Clear(Color.FloralWhite);
         SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
         
-        _playerSprite.Draw(SpriteBatch, new Vector2(10, 0));
+        _player.Draw(SpriteBatch);
         _enemySprite.Draw(SpriteBatch, new Vector2(200, 0));
         
         SpriteBatch.End();
