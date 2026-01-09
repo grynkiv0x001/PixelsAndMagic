@@ -4,28 +4,29 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GameLibrary.Graphics;
 
 /// <summary>
-/// Represents a rectangular region within a texture
+///     Represents a rectangular region within a texture
 /// </summary>
 public class TextureRegion
 {
-    public Texture2D Texture { get; set; }
-    
-    public Rectangle SourceRectangle { get; set; }
-    
-    /// <summary>
-    /// Gets width and height of the texture in pixels
-    /// </summary>
-    public int Width => SourceRectangle.Width;
-    public int Height => SourceRectangle.Height;
-
     public TextureRegion(Texture2D texture, int x, int y, int width, int height)
     {
         Texture = texture;
         SourceRectangle = new Rectangle(x, y, width, height);
     }
-    
+
+    public Texture2D Texture { get; set; }
+
+    public Rectangle SourceRectangle { get; set; }
+
     /// <summary>
-    /// Submit this texture region for drawing in the current batch.
+    ///     Gets width and height of the texture in pixels
+    /// </summary>
+    public int Width => SourceRectangle.Width;
+
+    public int Height => SourceRectangle.Height;
+
+    /// <summary>
+    ///     Submit this texture region for drawing in the current batch.
     /// </summary>
     /// <param name="spriteBatch">The spritebatch instance used for batching draw calls.</param>
     /// <param name="position">The xy-coordinate location to draw this texture region on the screen.</param>
@@ -36,7 +37,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    /// Submit this texture region for drawing in the current batch.
+    ///     Submit this texture region for drawing in the current batch.
     /// </summary>
     /// <param name="spriteBatch">The spritebatch instance used for batching draw calls.</param>
     /// <param name="position">The xy-coordinate location to draw this texture region on the screen.</param>
@@ -44,9 +45,13 @@ public class TextureRegion
     /// <param name="rotation">The amount of rotation, in radians, to apply when drawing this texture region on screen.</param>
     /// <param name="origin">The center of rotation, scaling, and position when drawing this texture region on screen.</param>
     /// <param name="scale">The scale factor to apply when drawing this texture region on screen.</param>
-    /// <param name="effects">Specifies if this texture region should be flipped horizontally, vertically, or both when drawing on screen.</param>
+    /// <param name="effects">
+    ///     Specifies if this texture region should be flipped horizontally, vertically, or both when drawing
+    ///     on screen.
+    /// </param>
     /// <param name="layerDepth">The depth of the layer to use when drawing this texture region on screen.</param>
-    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin,
+        float scale, SpriteEffects effects, float layerDepth)
     {
         Draw(
             spriteBatch,
@@ -61,7 +66,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    /// Submit this texture region for drawing in the current batch.
+    ///     Submit this texture region for drawing in the current batch.
     /// </summary>
     /// <param name="spriteBatch">The spritebatch instance used for batching draw calls.</param>
     /// <param name="position">The xy-coordinate location to draw this texture region on the screen.</param>
@@ -69,9 +74,13 @@ public class TextureRegion
     /// <param name="rotation">The amount of rotation, in radians, to apply when drawing this texture region on screen.</param>
     /// <param name="origin">The center of rotation, scaling, and position when drawing this texture region on screen.</param>
     /// <param name="scale">The amount of scaling to apply to the x- and y-axes when drawing this texture region on screen.</param>
-    /// <param name="effects">Specifies if this texture region should be flipped horizontally, vertically, or both when drawing on screen.</param>
+    /// <param name="effects">
+    ///     Specifies if this texture region should be flipped horizontally, vertically, or both when drawing
+    ///     on screen.
+    /// </param>
     /// <param name="layerDepth">The depth of the layer to use when drawing this texture region on screen.</param>
-    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin,
+        Vector2 scale, SpriteEffects effects, float layerDepth)
     {
         spriteBatch.Draw(
             Texture,

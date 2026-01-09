@@ -5,18 +5,19 @@ namespace GameLibrary.Graphics;
 
 public class AnimatedSprite : Sprite
 {
-    private int _currentFrame;
-    
-    private TimeSpan _elapsed;
     private Animation _animation;
-    
-    public AnimatedSprite() { }
+    private int _currentFrame;
+    private TimeSpan _elapsed;
+
+    public AnimatedSprite()
+    {
+    }
 
     public AnimatedSprite(Animation animation)
     {
-        this.Animation = animation;
+        Animation = animation;
     }
-    
+
     public Animation Animation
     {
         get => _animation;
@@ -36,11 +37,8 @@ public class AnimatedSprite : Sprite
             _elapsed -= _animation.Delay;
             _currentFrame++;
 
-            if (_currentFrame >= _animation.Frames.Count)
-            {
-                _currentFrame = 0;
-            }
-            
+            if (_currentFrame >= _animation.Frames.Count) _currentFrame = 0;
+
             Region = _animation.Frames[_currentFrame];
         }
     }

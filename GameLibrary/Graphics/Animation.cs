@@ -5,16 +5,6 @@ namespace GameLibrary.Graphics;
 
 public class Animation
 {
-    /// <summary>
-    /// The list of textures that determines in which order the frames should be displayed in
-    /// </summary>
-    public List<TextureRegion> Frames { get; set; }
-    
-    /// <summary>
-    /// The amount of time between frame change
-    /// </summary>
-    public TimeSpan Delay { get; set; }
-
     public Animation()
     {
         Frames = new List<TextureRegion>();
@@ -23,7 +13,17 @@ public class Animation
 
     public Animation(List<TextureRegion> frames, TimeSpan delay)
     {
-        this.Frames = frames;
-        this.Delay = delay;
+        Frames = frames;
+        Delay = delay;
     }
+
+    /// <summary>
+    ///     The list of textures that determines in which order the frames should be displayed in
+    /// </summary>
+    public List<TextureRegion> Frames { get; set; }
+
+    /// <summary>
+    ///     The amount of time between frame change
+    /// </summary>
+    public TimeSpan Delay { get; set; }
 }

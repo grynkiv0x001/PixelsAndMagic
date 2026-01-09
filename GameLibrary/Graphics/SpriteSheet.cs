@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,13 +11,8 @@ namespace GameLibrary.Graphics;
 
 public class SpriteSheet
 {
-    private Dictionary<string, TextureRegion> _regions;
-    private Dictionary<string, Animation> _animations;
-
-    /// <summary>
-    /// Gets or Sets the source texture represented by this texture atlas.
-    /// </summary>
-    public Texture2D Texture { get; set; }
+    private readonly Dictionary<string, Animation> _animations;
+    private readonly Dictionary<string, TextureRegion> _regions;
 
     public SpriteSheet()
     {
@@ -28,16 +22,21 @@ public class SpriteSheet
 
     public SpriteSheet(Texture2D texture)
     {
-        this.Texture = texture;
-        
+        Texture = texture;
+
         _regions = new Dictionary<string, TextureRegion>();
         _animations = new Dictionary<string, Animation>();
     }
 
+    /// <summary>
+    ///     Gets or Sets the source texture represented by this texture atlas.
+    /// </summary>
+    public Texture2D Texture { get; set; }
+
     public void AddRegion(string name, int x, int y, int width, int height)
     {
-        TextureRegion region = new TextureRegion(Texture, x, y, width, height);
-        
+        var region = new TextureRegion(Texture, x, y, width, height);
+
         _regions.Add(name, region);
     }
 
@@ -71,48 +70,48 @@ public class SpriteSheet
         _regions.Clear();
         _animations.Clear();
     }
-    
+
     public Sprite CreateSprite(string regionName)
     {
-        TextureRegion region = GetRegion(regionName);
-        
+        var region = GetRegion(regionName);
+
         return new Sprite(region);
     }
 
     public AnimatedSprite CreateAnimatedSprite(string animationName)
     {
-        Animation animation = GetAnimation(animationName);
-        
+        var animation = GetAnimation(animationName);
+
         return new AnimatedSprite(animation);
     }
 
     /// <summary>
-    /// Creates a new SpriteSheet (TextureAtlas) based on an XML configuration file.
+    ///     Creates a new SpriteSheet (TextureAtlas) based on an XML configuration file.
     /// </summary>
     /// <param name="content">The ContentManager.</param>
     /// <param name="filename">The path to the XML file, relative to the content root dir.</param>
     /// <returns>The SpriteSheet created by this method.</returns>
     public static SpriteSheet FromFile(ContentManager content, string filename)
     {
-        SpriteSheet spriteSheet = new SpriteSheet();
-        
-        string path = Path.Combine(content.RootDirectory, filename);
+        var spriteSheet = new SpriteSheet();
 
-        using (Stream stream = TitleContainer.OpenStream(path))
+        var path = Path.Combine(content.RootDirectory, filename);
+
+        using (var stream = TitleContainer.OpenStream(path))
         {
-            using (XmlReader reader = XmlReader.Create(stream))
+            using (var reader = XmlReader.Create(stream))
             {
                 var document = XDocument.Load(reader);
                 var root = document.Root;
-                
+
                 // The <Texture> element contains the content path for the Texture2D to load.
                 // We retrieve that value then use the content manager to load the texture.
                 if (root != null)
                 {
-                    string texturePath = root.Element("Texture")?.Value;
+                    var texturePath = root.Element("Texture")?.Value;
                     spriteSheet.Texture = content.Load<Texture2D>(texturePath);
                 }
-                
+
                 // The <Regions> element contains individual <Region> elements, each one describing
                 // a different texture region within the sprite sheet.  
                 //
@@ -127,23 +126,18 @@ public class SpriteSheet
                 var regions = root.Element("Regions")?.Elements("Region");
 
                 if (regions != null)
-                {
                     foreach (var region in regions)
                     {
-                        string name = region.Attribute("name")?.Value;
-                        
-                        int x = int.Parse(region.Attribute("x")?.Value ?? "0");
-                        int y = int.Parse(region.Attribute("y")?.Value ?? "0");
-                        int width = int.Parse(region.Attribute("width")?.Value ?? "0");
-                        int height = int.Parse(region.Attribute("height")?.Value ?? "0");
+                        var name = region.Attribute("name")?.Value;
 
-                        if (!string.IsNullOrEmpty(name))
-                        {
-                            spriteSheet.AddRegion(name, x, y, width, height);
-                        }
+                        var x = int.Parse(region.Attribute("x")?.Value ?? "0");
+                        var y = int.Parse(region.Attribute("y")?.Value ?? "0");
+                        var width = int.Parse(region.Attribute("width")?.Value ?? "0");
+                        var height = int.Parse(region.Attribute("height")?.Value ?? "0");
+
+                        if (!string.IsNullOrEmpty(name)) spriteSheet.AddRegion(name, x, y, width, height);
                     }
-                }
-                
+
                 // The <Animations> element contains individual <Animation> elements, each one describing
                 // a different animation within the atlas.
                 //
@@ -160,35 +154,31 @@ public class SpriteSheet
                 var animationElements = root.Element("Animations")?.Elements("Animation");
 
                 if (animationElements != null)
-                {
                     foreach (var animationElement in animationElements)
                     {
-                        string name = animationElement.Attribute("name")?.Value;
-                        float delayInMilliseconds = float.Parse(animationElement.Attribute("delay")?.Value ?? "0");
-                        
-                        TimeSpan delay = TimeSpan.FromMilliseconds(delayInMilliseconds);
-                        
-                        List<TextureRegion> frames = new List<TextureRegion>();
-                        
+                        var name = animationElement.Attribute("name")?.Value;
+                        var delayInMilliseconds = float.Parse(animationElement.Attribute("delay")?.Value ?? "0");
+
+                        var delay = TimeSpan.FromMilliseconds(delayInMilliseconds);
+
+                        var frames = new List<TextureRegion>();
+
                         var frameRegions = animationElement.Elements("Frame");
 
                         if (frameRegions != null)
-                        {
                             foreach (var frameRegion in frameRegions)
                             {
-                                string regionName = frameRegion.Attribute("region")?.Value;
-                                
-                                TextureRegion region = spriteSheet.GetRegion(regionName);
+                                var regionName = frameRegion.Attribute("region")?.Value;
+
+                                var region = spriteSheet.GetRegion(regionName);
                                 frames.Add(region);
                             }
-                        }
 
-                        Animation animation = new Animation(frames, delay);
-                        
+                        var animation = new Animation(frames, delay);
+
                         spriteSheet.AddAnimation(name, animation);
                     }
-                }
-                
+
                 return spriteSheet;
             }
         }

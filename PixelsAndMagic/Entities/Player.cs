@@ -1,47 +1,92 @@
-using Microsoft.Xna.Framework;
-
 using GameLibrary.Graphics;
+using GameLibrary.Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace PixelsAndMagic.Entities;
 
 public class Player
 {
-    private readonly AnimatedSprite _playerSprite;
-    
-    public float Health { get; set; }
-    public float BaseDamage { get; set; }
-    
-    public Vector2 Position { get; set; }
+    private const float MOVEMENT_SPEED = 5.0f;
 
-    public Player(AnimatedSprite playerSprite)
+    private readonly InputManager _inputManager;
+    private readonly AnimatedSprite _playerSprite;
+
+    private bool _isMoving;
+
+    public Player(AnimatedSprite playerSprite, InputManager inputManager)
     {
         _playerSprite = playerSprite;
+        _inputManager = inputManager;
         Position = new Vector2(0, 0);
     }
 
-    public Player(AnimatedSprite playerSprite, Vector2 position)
+    public Player(AnimatedSprite playerSprite, InputManager inputManager, Vector2 position)
     {
         _playerSprite = playerSprite;
+        _inputManager = inputManager;
         Position = position;
     }
 
-    public Player(AnimatedSprite playerSprite, Vector2 startPosition, float baseHealth, float baseDamage)
+    public Player(AnimatedSprite playerSprite, InputManager inputManager, Vector2 startPosition, float baseHealth,
+        float baseDamage)
     {
-       _playerSprite = playerSprite;
-       Position = startPosition;
-       
-       Health = baseHealth;
-       BaseDamage = baseDamage;
+        _playerSprite = playerSprite;
+        _inputManager = inputManager;
+
+        Position = startPosition;
+        Health = baseHealth;
+        BaseDamage = baseDamage;
     }
+
+    public float Health { get; set; }
+    public float BaseDamage { get; set; }
+
+    public Vector2 Position { get; set; }
 
     public void Update(GameTime gameTime)
     {
+        HandleKeyboardInput();
+
         _playerSprite.Update(gameTime);
     }
-    
+
     public void Draw(SpriteBatch spriteBatch)
     {
         _playerSprite.Draw(spriteBatch, Position);
+    }
+
+    private void HandleKeyboardInput()
+    {
+        var speed = MOVEMENT_SPEED;
+
+        if (_inputManager.Keyboard.IsKeyDown(Keys.Up))
+        {
+            Position += new Vector2(0, -speed);
+            _isMoving = true;
+        }
+
+        if (_inputManager.Keyboard.IsKeyDown(Keys.Down))
+        {
+            Position += new Vector2(0, speed);
+            _isMoving = true;
+        }
+
+        if (_inputManager.Keyboard.IsKeyDown(Keys.Left))
+        {
+            Position += new Vector2(-speed, 0);
+            _isMoving = true;
+        }
+
+        if (_inputManager.Keyboard.IsKeyDown(Keys.Right))
+        {
+            Position += new Vector2(speed, 0);
+            _isMoving = true;
+        }
+
+        if (_inputManager.Keyboard.IsKeyReleased(Keys.Up) || _inputManager.Keyboard.IsKeyReleased(Keys.Down) ||
+            _inputManager.Keyboard.IsKeyReleased(Keys.Left) || _inputManager.Keyboard.IsKeyReleased(Keys.Right))
+            _isMoving = false;
     }
 }

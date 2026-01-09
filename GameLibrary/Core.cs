@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using GameLibrary.Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,35 +8,8 @@ namespace GameLibrary;
 
 public class Core : Game
 {
-    private static Core _instance;
-
     /// <summary>
-    /// Gets a reference to the GameLibrary instance.
-    /// </summary>
-    public static Core Instance => _instance;
-
-    /// <summary>
-    /// Gets the graphics device manager to control the presentation of graphics.
-    /// </summary>
-    public static GraphicsDeviceManager Graphics { get; private set; }
-
-    /// <summary>
-    /// Gets the graphics device used to create graphical resources and perform primitive rendering.
-    /// </summary>
-    public static new GraphicsDevice GraphicsDevice { get; private set; }
-
-    /// <summary>
-    /// Gets the sprite batch used for all 2D rendering.
-    /// </summary>
-    public static SpriteBatch SpriteBatch { get; private set; }
-
-    /// <summary>
-    /// Gets the content manager used to load global assets.
-    /// </summary>
-    public static new ContentManager Content { get; private set; }
-
-    /// <summary>
-    /// Creates a new GameLibrary instance.
+    ///     Creates a new GameLibrary instance.
     /// </summary>
     /// <param name="title">The title to display in the title bar of the game window.</param>
     /// <param name="width">The initial width, in pixels, of the game window.</param>
@@ -43,13 +18,10 @@ public class Core : Game
     protected Core(string title, int width, int height, bool fullScreen)
     {
         // Ensure that multiple cores are not created.
-        if (_instance != null)
-        {
-            throw new System.InvalidOperationException("Only a single GameLibrary instance can be created");
-        }
+        if (Instance != null) throw new InvalidOperationException("Only a single GameLibrary instance can be created");
 
         // Store reference to engine for global member access.
-        _instance = this;
+        Instance = this;
 
         // Create a new graphics device manager.
         Graphics = new GraphicsDeviceManager(this);
@@ -76,15 +48,50 @@ public class Core : Game
         IsMouseVisible = true;
     }
 
+    /// <summary>
+    ///     Gets a reference to the GameLibrary instance.
+    /// </summary>
+    public static Core Instance { get; private set; }
+
+    /// <summary>
+    ///     Gets the graphics device manager to control the presentation of graphics.
+    /// </summary>
+    public static GraphicsDeviceManager Graphics { get; private set; }
+
+    /// <summary>
+    ///     Gets the graphics device used to create graphical resources and perform primitive rendering.
+    /// </summary>
+    public new static GraphicsDevice GraphicsDevice { get; private set; }
+
+    /// <summary>
+    ///     Gets the sprite batch used for all 2D rendering.
+    /// </summary>
+    public static SpriteBatch SpriteBatch { get; private set; }
+
+    /// <summary>
+    ///     Gets the content manager used to load global assets.
+    /// </summary>
+    public new static ContentManager Content { get; private set; }
+
+    public static InputManager InputManager { get; private set; }
+
     protected override void Initialize()
     {
-        base.Initialize();
-
-        // Set the core's graphics device to a reference of the base Game's
-        // graphics device.
+        // Set the core's graphics device to a reference of the base Game's graphics device.
         GraphicsDevice = base.GraphicsDevice;
 
         // Create the sprite batch instance.
         SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+        InputManager = new InputManager();
+
+        base.Initialize();
+    }
+
+    protected override void Update(GameTime gameTime)
+    {
+        InputManager.Update();
+
+        base.Update(gameTime);
     }
 }
