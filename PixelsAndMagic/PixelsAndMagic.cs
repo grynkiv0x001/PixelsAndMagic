@@ -27,7 +27,7 @@ public class PixelsAndMagic : Core
         var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _enemy = new Enemy(enemySprite, new Vector2(200, 0));
+        _enemy = new Enemy(enemySprite, new Vector2(300, 200), false);
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -53,6 +53,8 @@ public class PixelsAndMagic : Core
 
         _player.Update(gameTime, screenBounds);
         _enemy.Update(gameTime, screenBounds);
+
+        if (_player.Collider.Intersects(_enemy.Collider)) _player.HandleEntityCollision(_enemy.Collider);
 
         base.Update(gameTime);
     }

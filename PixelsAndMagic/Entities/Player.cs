@@ -46,27 +46,16 @@ public class Player
 
     public Vector2 Position { get; set; }
 
+    public Circle Collider => new(
+        Position.X + _playerSprite.Width * 0.5f,
+        Position.Y + _playerSprite.Height * 0.5f,
+        _playerSprite.Width * 0.5f
+    );
+
     public void Update(GameTime gameTime, Rectangle screenBounds)
     {
         HandleKeyboardInput();
-
-        var playerBounds = new Circle(
-            (int)(Position.X + _playerSprite.Width * 0.5f),
-            (int)(Position.Y + _playerSprite.Height * 0.5f),
-            (int)(_playerSprite.Width * 0.5f)
-        );
-
-        // Using distance-based checks to determine if the Player is
-        // within the bounds of the game screen & if not - move it back
-        if (playerBounds.Left < screenBounds.Left)
-            Position = new Vector2(screenBounds.Left, Position.Y);
-        else if (playerBounds.Right > screenBounds.Right)
-            Position = new Vector2(screenBounds.Right - _playerSprite.Width, Position.Y);
-
-        if (playerBounds.Top < screenBounds.Top)
-            Position = new Vector2(Position.X, screenBounds.Top);
-        else if (playerBounds.Bottom > screenBounds.Bottom)
-            Position = new Vector2(Position.X, screenBounds.Bottom - _playerSprite.Height);
+        HandleCollision(screenBounds);
 
         _playerSprite.Update(gameTime);
     }
@@ -74,6 +63,47 @@ public class Player
     public void Draw(SpriteBatch spriteBatch)
     {
         _playerSprite.Draw(spriteBatch, Position);
+    }
+
+    public void HandleEntityCollision(Circle target)
+    {
+        var self = Collider;
+
+        if (!self.Intersects(Collider))
+            return;
+
+        var direction = self.Center - target.Center;
+
+        if (direction == Vector2.Zero)
+            direction = Vector2.UnitX;
+
+        direction.Normalize();
+
+        var distance = Vector2.Distance(self.Center, target.Center);
+        var penetration = self.Radius + target.Radius - distance;
+
+        Position += direction * penetration;
+    }
+
+    private void HandleCollision(Rectangle boundaries)
+    {
+        var playerBounds = new Circle(
+            Position.X + _playerSprite.Width * 0.5f,
+            Position.Y + _playerSprite.Height * 0.5f,
+            _playerSprite.Width * 0.5f
+        );
+
+        // Using distance-based checks to determine if the Player is
+        // within the bounds of the game screen & if not - move it back
+        if (playerBounds.Left < boundaries.Left)
+            Position = new Vector2(boundaries.Left, Position.Y);
+        else if (playerBounds.Right > boundaries.Right)
+            Position = new Vector2(boundaries.Right - _playerSprite.Width, Position.Y);
+
+        if (playerBounds.Top < boundaries.Top)
+            Position = new Vector2(Position.X, boundaries.Top);
+        else if (playerBounds.Bottom > boundaries.Bottom)
+            Position = new Vector2(Position.X, boundaries.Bottom - _playerSprite.Height);
     }
 
     private void HandleKeyboardInput()

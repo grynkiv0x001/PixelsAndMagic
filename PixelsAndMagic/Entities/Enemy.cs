@@ -14,15 +14,16 @@ public class Enemy
 
     private bool _isMoving;
 
-    public Enemy(AnimatedSprite sprite, Vector2 position)
+    public Enemy(AnimatedSprite sprite, Vector2 position, bool freerun = true)
     {
         _enemySprite = sprite;
         Position = position;
 
-        AssignRandomVelocity();
+        if (freerun)
+            AssignRandomVelocity();
     }
 
-    public Enemy(AnimatedSprite sprite, Vector2 position, float baseHealth, float baseDamage)
+    public Enemy(AnimatedSprite sprite, Vector2 position, float baseHealth, float baseDamage, bool freerun = true)
     {
         _enemySprite = sprite;
         Position = position;
@@ -30,7 +31,8 @@ public class Enemy
         Health = baseHealth;
         BaseDamage = baseDamage;
 
-        AssignRandomVelocity();
+        if (freerun)
+            AssignRandomVelocity();
     }
 
     public Vector2 Position { get; set; }
@@ -39,15 +41,21 @@ public class Enemy
     public float Health { get; set; }
     public float BaseDamage { get; set; }
 
+    public Circle Collider => new(
+        Position.X + _enemySprite.Width * 0.5f,
+        Position.Y + _enemySprite.Height * 0.5f,
+        _enemySprite.Width * 0.5f
+    );
+
     public void Update(GameTime gameTime, Rectangle screenBounds)
     {
         var newPosition = Position + Velocity;
         var normal = Vector2.Zero;
 
         var enemyBounds = new Circle(
-            (int)(newPosition.X + _enemySprite.Width * 0.5f),
-            (int)(newPosition.Y + _enemySprite.Height * 0.5f),
-            (int)(_enemySprite.Width * 0.5f)
+            newPosition.X + _enemySprite.Width * 0.5f,
+            newPosition.Y + _enemySprite.Height * 0.5f,
+            _enemySprite.Width * 0.5f
         );
 
         // Using distance-based checks to determine if the Player is
