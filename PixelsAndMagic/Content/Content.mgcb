@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Images/basic-sheet.png
+#begin Images/enemy-sheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,13 +23,13 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/basic-sheet.png
+/build:Images/enemy-sheet.png
+
+#begin Images/enemy-spritesheet.xml
+/copy:Images/enemy-spritesheet.xml
 
 #begin Images/player-spritesheet.xml
 /copy:Images/player-spritesheet.xml
-
-#begin Images/spritesheet.xml
-/copy:Images/spritesheet.xml
 
 #begin Images/wizard-sheet.png
 /importer:TextureImporter

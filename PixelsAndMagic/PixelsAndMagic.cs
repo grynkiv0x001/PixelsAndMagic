@@ -12,7 +12,7 @@ public class PixelsAndMagic : Core
     private const int WINDOW_HEIGHT = 720;
     private const bool FULLSCREEN = false;
 
-    private Sprite _enemySprite;
+    private Enemy _enemy;
     private Player _player;
 
     public PixelsAndMagic() : base("PixelsAndMagic", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN)
@@ -22,10 +22,12 @@ public class PixelsAndMagic : Core
     protected override void LoadContent()
     {
         // Enemy sprite loading
-        var spriteSheet = SpriteSheet.FromFile(Content, "Images/spritesheet.xml");
+        var enemySheet = SpriteSheet.FromFile(Content, "Images/enemy-spritesheet.xml");
 
-        _enemySprite = spriteSheet.CreateSprite("Enemy");
-        _enemySprite.Scale = new Vector2(4.0f, 4.0f);
+        var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
+        enemySprite.Scale = new Vector2(4.0f, 4.0f);
+
+        _enemy = new Enemy(enemySprite, new Vector2(200, 0));
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -50,6 +52,7 @@ public class PixelsAndMagic : Core
         );
 
         _player.Update(gameTime, screenBounds);
+        _enemy.Update(gameTime, screenBounds);
 
         base.Update(gameTime);
     }
@@ -60,7 +63,7 @@ public class PixelsAndMagic : Core
         SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         _player.Draw(SpriteBatch);
-        _enemySprite.Draw(SpriteBatch, new Vector2(200, 0));
+        _enemy.Draw(SpriteBatch);
 
         SpriteBatch.End();
 
