@@ -23,7 +23,6 @@ public class Core : Game
         // Store reference to engine for global member access.
         Instance = this;
 
-        // Create a new graphics device manager.
         Graphics = new GraphicsDeviceManager(this);
 
         // Set the graphics defaults.
@@ -31,17 +30,14 @@ public class Core : Game
         Graphics.PreferredBackBufferHeight = height;
         Graphics.IsFullScreen = fullScreen;
 
-        // Apply the graphic presentation changes.
         Graphics.ApplyChanges();
 
-        // Set the window title.
         Window.Title = title;
 
         // Set the core's content manager to a reference of the base Game's
         // content manager.
         Content = base.Content;
 
-        // Set the root directory for content.
         Content.RootDirectory = "Content";
 
         // Mouse is visible by default.
@@ -80,7 +76,6 @@ public class Core : Game
         // Set the core's graphics device to a reference of the base Game's graphics device.
         GraphicsDevice = base.GraphicsDevice;
 
-        // Create the sprite batch instance.
         SpriteBatch = new SpriteBatch(GraphicsDevice);
 
         InputManager = new InputManager();

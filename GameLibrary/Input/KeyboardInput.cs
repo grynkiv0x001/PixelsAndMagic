@@ -32,7 +32,6 @@ public class KeyboardInput
     public bool IsKeyPressed(Keys key)
     {
         return CurrentState.IsKeyDown(key) && PreviousState.IsKeyUp(key);
-        ;
     }
 
     public bool IsKeyReleased(Keys key)

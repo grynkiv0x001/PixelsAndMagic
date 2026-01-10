@@ -40,7 +40,16 @@ public class PixelsAndMagic : Core
 
     protected override void Update(GameTime gameTime)
     {
-        _player.Update(gameTime);
+        // Screen boundaries
+        // TODO: Create a proper world instance
+        var screenBounds = new Rectangle(
+            0,
+            0,
+            GraphicsDevice.PresentationParameters.BackBufferWidth,
+            GraphicsDevice.PresentationParameters.BackBufferHeight
+        );
+
+        _player.Update(gameTime, screenBounds);
 
         base.Update(gameTime);
     }

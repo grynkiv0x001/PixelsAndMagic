@@ -1,5 +1,6 @@
 using GameLibrary.Graphics;
 using GameLibrary.Input;
+using GameLibrary.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -45,9 +46,27 @@ public class Player
 
     public Vector2 Position { get; set; }
 
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, Rectangle screenBounds)
     {
         HandleKeyboardInput();
+
+        var playerBounds = new Circle(
+            (int)(Position.X + _playerSprite.Width * 0.5f),
+            (int)(Position.Y + _playerSprite.Height * 0.5f),
+            (int)(_playerSprite.Width * 0.5f)
+        );
+
+        // Using distance-based checks to determine if the Player is
+        // within the bounds of the game screen & if not - move it back
+        if (playerBounds.Left < screenBounds.Left)
+            Position = new Vector2(screenBounds.Left, Position.Y);
+        else if (playerBounds.Right > screenBounds.Right)
+            Position = new Vector2(screenBounds.Right - _playerSprite.Width, Position.Y);
+
+        if (playerBounds.Top < screenBounds.Top)
+            Position = new Vector2(Position.X, screenBounds.Top);
+        else if (playerBounds.Bottom > screenBounds.Bottom)
+            Position = new Vector2(Position.X, screenBounds.Bottom - _playerSprite.Height);
 
         _playerSprite.Update(gameTime);
     }
