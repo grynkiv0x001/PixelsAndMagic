@@ -19,6 +19,20 @@
 /processorParam:Quality=Best
 /build:Audio/main-ambient.mp3
 
+#begin Fonts/Caudex.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Caudex.spritefont
+
+#begin Fonts/Jacquard_12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Jacquard_12.spritefont
+
 #begin Images/enemy-sheet.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -10,10 +10,16 @@ namespace PixelsAndMagic;
 public class PixelsAndMagic : Core
 {
     private const int WINDOW_WIDTH = 1280;
-    private const int WINDOW_HEIGHT = 720;
+    private const int WINDOW_HEIGHT = 768;
     private const bool FULLSCREEN = false;
 
     private Enemy _enemy;
+
+    private SpriteFont _fontPixel;
+    private SpriteFont _fontRegular;
+
+    private Vector2 _gameInfoTextOrigin;
+    private Vector2 _gameInfoTextPosition;
 
     private Song _mainAmbientTrack;
 
@@ -33,7 +39,7 @@ public class PixelsAndMagic : Core
         var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _enemy = new Enemy(enemySprite, new Vector2(600, 400), false);
+        _enemy = new Enemy(enemySprite, new Vector2(600, 380), false);
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -41,7 +47,7 @@ public class PixelsAndMagic : Core
         var playerSprite = playerSheet.CreateAnimatedSprite("wizard-animation");
         playerSprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _player = new Player(playerSprite, InputManager, new Vector2(200, 200));
+        _player = new Player(playerSprite, InputManager, new Vector2(200, 200), 100.0f, 20.0f);
 
         // World loading (using the Tilemap)
         _world = Tilemap.FromFile(Content, "Images/world-tilemap.xml");
@@ -49,6 +55,10 @@ public class PixelsAndMagic : Core
 
         // Loading audio
         _mainAmbientTrack = Content.Load<Song>("Audio/main-ambient");
+
+        // Loading font
+        _fontPixel = Content.Load<SpriteFont>("Fonts/Jacquard_12");
+        _fontRegular = Content.Load<SpriteFont>("Fonts/Caudex");
 
         base.LoadContent();
     }
@@ -58,6 +68,11 @@ public class PixelsAndMagic : Core
         base.Initialize();
 
         AudioController.PlaySoundTrack(_mainAmbientTrack);
+
+        var infoTextYOrigin = _fontPixel.MeasureString("Health").Y * 0.5f;
+
+        _gameInfoTextPosition = new Vector2(32, 32);
+        _gameInfoTextOrigin = new Vector2(0, infoTextYOrigin);
     }
 
     protected override void Update(GameTime gameTime)
@@ -91,6 +106,18 @@ public class PixelsAndMagic : Core
 
         _player.Draw(SpriteBatch);
         _enemy.Draw(SpriteBatch);
+
+        SpriteBatch.DrawString(
+            _fontPixel,
+            $"Health: {_player.Health}",
+            _gameInfoTextPosition,
+            Color.FloralWhite,
+            0.0f,
+            _gameInfoTextOrigin,
+            2.0f,
+            SpriteEffects.None,
+            0.0f
+        );
 
         SpriteBatch.End();
 
