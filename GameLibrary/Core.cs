@@ -1,4 +1,5 @@
 ﻿using System;
+using GameLibrary.Audio;
 using GameLibrary.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -71,6 +72,8 @@ public class Core : Game
 
     public static InputManager InputManager { get; private set; }
 
+    public static AudioController AudioController { get; private set; }
+
     protected override void Initialize()
     {
         // Set the core's graphics device to a reference of the base Game's graphics device.
@@ -80,12 +83,16 @@ public class Core : Game
 
         InputManager = new InputManager();
 
+        AudioController = new AudioController();
+
         base.Initialize();
     }
 
     protected override void Update(GameTime gameTime)
     {
         InputManager.Update();
+
+        AudioController.Update();
 
         base.Update(gameTime);
     }

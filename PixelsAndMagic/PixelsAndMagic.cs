@@ -2,6 +2,7 @@
 using GameLibrary.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using PixelsAndMagic.Entities;
 
 namespace PixelsAndMagic;
@@ -13,6 +14,9 @@ public class PixelsAndMagic : Core
     private const bool FULLSCREEN = false;
 
     private Enemy _enemy;
+
+    private Song _mainAmbientTrack;
+
     private Player _player;
 
     private Tilemap _world;
@@ -29,7 +33,7 @@ public class PixelsAndMagic : Core
         var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _enemy = new Enemy(enemySprite, new Vector2(600, 400));
+        _enemy = new Enemy(enemySprite, new Vector2(600, 400), false);
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -43,7 +47,17 @@ public class PixelsAndMagic : Core
         _world = Tilemap.FromFile(Content, "Images/world-tilemap.xml");
         _world.Scale = new Vector2(4.0f, 4.0f);
 
+        // Loading audio
+        _mainAmbientTrack = Content.Load<Song>("Audio/main-ambient");
+
         base.LoadContent();
+    }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+
+        AudioController.PlaySoundTrack(_mainAmbientTrack);
     }
 
     protected override void Update(GameTime gameTime)

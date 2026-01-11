@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/main-ambient.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/main-ambient.mp3
+
 #begin Images/enemy-sheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
