@@ -1,6 +1,7 @@
 ﻿using System;
 using GameLibrary.Audio;
 using GameLibrary.Input;
+using GameLibrary.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +10,9 @@ namespace GameLibrary;
 
 public class Core : Game
 {
+    private static Scene s_activeScene;
+    private static Scene s_nextScene;
+
     /// <summary>
     ///     Creates a new GameLibrary instance.
     /// </summary>
@@ -88,12 +92,50 @@ public class Core : Game
         base.Initialize();
     }
 
+    protected override void UnloadContent()
+    {
+        AudioController.Dispose();
+
+        base.UnloadContent();
+    }
+
     protected override void Update(GameTime gameTime)
     {
         InputManager.Update();
 
         AudioController.Update();
 
+        if (s_nextScene != null) TransitionScene();
+
+        s_activeScene?.Update(gameTime);
+
         base.Update(gameTime);
+    }
+
+    protected override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.Clear(Color.FloralWhite);
+
+        s_activeScene?.Draw(gameTime);
+
+        base.Draw(gameTime);
+    }
+
+    public static void SetScene(Scene scene)
+    {
+        if (s_activeScene != scene) s_nextScene = scene;
+    }
+
+    private static void TransitionScene()
+    {
+        s_activeScene?.Dispose();
+
+        GC.Collect();
+
+        s_activeScene = s_nextScene;
+
+        s_nextScene = null;
+
+        s_activeScene?.Initialize();
     }
 }
