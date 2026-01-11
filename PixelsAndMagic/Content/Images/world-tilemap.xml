@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Tilemap>
+    <Tileset region="0 0 128 64" tileWidth="32" tileHeight="32">Images/world-tilemap</Tileset>
+    <Tiles>
+        04 04 04 04 04 04 04 04 04 04
+        04 00 00 00 00 00 00 00 00 04
+        04 00 00 00 00 00 00 00 00 04
+        04 00 00 00 00 00 00 00 00 04
+        04 00 00 00 00 00 00 00 00 04
+        04 04 04 04 04 04 04 04 04 04
+    </Tiles>
+</Tilemap>

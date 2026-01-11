@@ -15,6 +15,8 @@ public class PixelsAndMagic : Core
     private Enemy _enemy;
     private Player _player;
 
+    private Tilemap _world;
+
     public PixelsAndMagic() : base("PixelsAndMagic", WINDOW_WIDTH, WINDOW_HEIGHT, FULLSCREEN)
     {
     }
@@ -27,7 +29,7 @@ public class PixelsAndMagic : Core
         var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _enemy = new Enemy(enemySprite, new Vector2(300, 200), false);
+        _enemy = new Enemy(enemySprite, new Vector2(600, 400));
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -35,7 +37,11 @@ public class PixelsAndMagic : Core
         var playerSprite = playerSheet.CreateAnimatedSprite("wizard-animation");
         playerSprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _player = new Player(playerSprite, InputManager, new Vector2(10, 0));
+        _player = new Player(playerSprite, InputManager, new Vector2(200, 200));
+
+        // World loading (using the Tilemap)
+        _world = Tilemap.FromFile(Content, "Images/world-tilemap.xml");
+        _world.Scale = new Vector2(4.0f, 4.0f);
 
         base.LoadContent();
     }
@@ -44,11 +50,14 @@ public class PixelsAndMagic : Core
     {
         // Screen boundaries
         // TODO: Create a proper world instance
+        var tileWidth = (int)_world.TileWidth;
+        var tileHeight = (int)_world.TileHeight;
+
         var screenBounds = new Rectangle(
-            0,
-            0,
-            GraphicsDevice.PresentationParameters.BackBufferWidth,
-            GraphicsDevice.PresentationParameters.BackBufferHeight
+            tileWidth,
+            tileHeight,
+            (int)(_world.Columns * _world.TileWidth) - tileWidth * 2,
+            (int)(_world.Rows * _world.TileHeight) - tileHeight * 2
         );
 
         _player.Update(gameTime, screenBounds);
@@ -63,6 +72,8 @@ public class PixelsAndMagic : Core
     {
         GraphicsDevice.Clear(Color.FloralWhite);
         SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
+        _world.Draw(SpriteBatch);
 
         _player.Draw(SpriteBatch);
         _enemy.Draw(SpriteBatch);
