@@ -12,6 +12,9 @@ public class TitleScene(int windowWidth, int windowHeight) : Scene
     private const string TITLE_SECOND = "& Magic";
     private const string HELPER_TEXT = "Press Enter to continue";
 
+    private int _alpha;
+    private bool _decrease = true;
+
     private SpriteFont _font;
 
     private Vector2 _helperTextOrigin;
@@ -26,6 +29,8 @@ public class TitleScene(int windowWidth, int windowHeight) : Scene
     public override void Initialize()
     {
         base.Initialize();
+
+        _alpha = 255;
 
         var size = _font.MeasureString(TITLE_FIRST);
 
@@ -52,13 +57,19 @@ public class TitleScene(int windowWidth, int windowHeight) : Scene
     {
         if (Core.InputManager.Keyboard.IsKeyPressed(Keys.Enter))
             Core.SetScene(new GameScene());
+
+        if (_decrease)
+            _alpha--;
+        else
+            _alpha++;
+
+        if (_alpha is 0 or 255)
+            _decrease = !_decrease;
     }
 
     public override void Draw(GameTime gameTime)
     {
         SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-        var dropShadowColor = Color.Black * 0.5f;
 
         SpriteBatch.DrawString(
             _font,
@@ -88,7 +99,7 @@ public class TitleScene(int windowWidth, int windowHeight) : Scene
             _font,
             HELPER_TEXT,
             _helperTextPosition,
-            Color.Black,
+            new Color(0, 0, 0, _alpha),
             0.0f,
             _helperTextOrigin,
             2.0f,

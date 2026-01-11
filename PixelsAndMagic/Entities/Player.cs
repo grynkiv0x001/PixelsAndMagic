@@ -15,6 +15,7 @@ public class Player
     private readonly AnimatedSprite _playerSprite;
 
     private bool _isMoving;
+    private bool _isReversed;
 
     public Player(AnimatedSprite playerSprite, InputManager inputManager)
     {
@@ -56,6 +57,11 @@ public class Player
     {
         HandleKeyboardInput();
         HandleCollision(screenBounds);
+
+        if (_isReversed)
+            _playerSprite.Effects = SpriteEffects.FlipHorizontally;
+        else
+            _playerSprite.Effects = SpriteEffects.None;
 
         _playerSprite.Update(gameTime);
     }
@@ -126,12 +132,14 @@ public class Player
         {
             Position += new Vector2(-speed, 0);
             _isMoving = true;
+            _isReversed = true;
         }
 
         if (_inputManager.Keyboard.IsKeyDown(Keys.Right))
         {
             Position += new Vector2(speed, 0);
             _isMoving = true;
+            _isReversed = false;
         }
 
         if (_inputManager.Keyboard.IsKeyReleased(Keys.Up) || _inputManager.Keyboard.IsKeyReleased(Keys.Down) ||
