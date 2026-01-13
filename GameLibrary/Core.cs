@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameLibrary.Audio;
 using GameLibrary.Input;
 using GameLibrary.Scenes;
@@ -10,8 +12,7 @@ namespace GameLibrary;
 
 public class Core : Game
 {
-    private static Scene s_activeScene;
-    private static Scene s_nextScene;
+    private static readonly Stack<Scene> s_scenes = new();
 
     /// <summary>
     ///     Creates a new GameLibrary instance.
@@ -105,9 +106,7 @@ public class Core : Game
 
         AudioController.Update();
 
-        if (s_nextScene != null) TransitionScene();
-
-        s_activeScene?.Update(gameTime);
+        if (s_scenes.Count > 0) s_scenes.Peek().Update(gameTime);
 
         base.Update(gameTime);
     }
@@ -116,26 +115,29 @@ public class Core : Game
     {
         GraphicsDevice.Clear(Color.FloralWhite);
 
-        s_activeScene?.Draw(gameTime);
+        foreach (var scene in s_scenes.Reverse())
+            scene.Draw(gameTime);
 
         base.Draw(gameTime);
     }
 
     public static void SetScene(Scene scene)
     {
-        if (s_activeScene != scene) s_nextScene = scene;
+        while (s_scenes.Count > 0) PopScene();
+
+        s_scenes.Push(scene);
+        scene.Initialize();
     }
 
-    private static void TransitionScene()
+    public static void PushScene(Scene scene)
     {
-        s_activeScene?.Dispose();
+        s_scenes.Push(scene);
+        scene.Initialize();
+    }
 
-        GC.Collect();
-
-        s_activeScene = s_nextScene;
-
-        s_nextScene = null;
-
-        s_activeScene?.Initialize();
+    public static void PopScene()
+    {
+        var scene = s_scenes.Pop();
+        scene.Dispose();
     }
 }

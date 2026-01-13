@@ -23,7 +23,7 @@ public class PixelsAndMagic : Core
         // TODO: Move it to the game settings (controlling the volume)
         AudioController.PlaySoundTrack(_mainAmbientTrack);
 
-        SetScene(new TitleScene(WINDOW_WIDTH, WINDOW_HEIGHT));
+        PushScene(new TitleScene(WINDOW_WIDTH, WINDOW_HEIGHT));
     }
 
     protected override void LoadContent()

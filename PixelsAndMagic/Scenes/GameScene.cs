@@ -3,6 +3,7 @@ using GameLibrary.Graphics;
 using GameLibrary.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using PixelsAndMagic.Entities;
 
 namespace PixelsAndMagic.Scenes;
@@ -60,6 +61,9 @@ public class GameScene : Scene
 
     public override void Update(GameTime gameTime)
     {
+        if (Core.InputManager.Keyboard.IsKeyPressed(Keys.Escape))
+            Core.PushScene(new PauseScene());
+
         // Screen boundaries
         // TODO: Create a proper world instance
         var tileWidth = (int)_world.TileWidth;
