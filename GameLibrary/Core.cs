@@ -121,6 +121,11 @@ public class Core : Game
         base.Draw(gameTime);
     }
 
+    public static void ExitGame()
+    {
+        Instance.Exit();
+    }
+
     public static void SetScene(Scene scene)
     {
         while (s_scenes.Count > 0) PopScene();
