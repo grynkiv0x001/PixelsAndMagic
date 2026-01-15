@@ -43,20 +43,25 @@ public class PauseScene : Scene
         _stackPanel.Spacing = 10;
 
         var resumeButton = new Button();
+        var settingsButton = new Button();
+        var exitButton = new Button();
+
         _stackPanel.AddChild(resumeButton);
+        _stackPanel.AddChild(settingsButton);
+        _stackPanel.AddChild(exitButton);
+
         resumeButton.Text = "Resume the game";
         resumeButton.IsFocused = true;
         resumeButton.Click += (_, _) =>
             Core.PopScene();
 
-        var settingsButton = new Button();
-        _stackPanel.AddChild(settingsButton);
         settingsButton.Text = "Game settings";
         settingsButton.Click += (_, _) =>
+        {
+            Core.PopScene();
             Core.PushScene(new SettingsScene());
+        };
 
-        var exitButton = new Button();
-        _stackPanel.AddChild(exitButton);
         exitButton.Text = "Exit the game";
         exitButton.Click += (_, _) =>
             Core.ExitGame();

@@ -130,14 +130,14 @@ public class Core : Game
     {
         while (s_scenes.Count > 0) PopScene();
 
-        s_scenes.Push(scene);
         scene.Initialize();
+        s_scenes.Push(scene);
     }
 
     public static void PushScene(Scene scene)
     {
-        s_scenes.Push(scene);
         scene.Initialize();
+        s_scenes.Push(scene);
     }
 
     public static void PopScene()

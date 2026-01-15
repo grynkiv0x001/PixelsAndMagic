@@ -25,7 +25,6 @@ public class PixelsAndMagic : Core
     {
         base.Initialize();
 
-        // TODO: Move it to the game settings (controlling the volume)
         AudioController.PlaySoundTrack(_mainAmbientTrack);
 
         InitializeGum();
@@ -54,8 +53,6 @@ public class PixelsAndMagic : Core
         GumService.Default.ContentLoader.XnaContentManager = Content;
 
         FrameworkElement.KeyboardsForUiControl.Add(GumService.Default.Keyboard);
-
-        FrameworkElement.GamePadsForUiControl.AddRange(GumService.Default.Gamepads);
 
         FrameworkElement.TabReverseKeyCombos.Add(
             new KeyCombo { PushedKey = Keys.Up });
