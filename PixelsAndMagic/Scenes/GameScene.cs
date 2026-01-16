@@ -1,6 +1,7 @@
 using GameLibrary;
 using GameLibrary.Graphics;
 using GameLibrary.Scenes;
+using GameLibrary.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +11,8 @@ namespace PixelsAndMagic.Scenes;
 
 public class GameScene : Scene
 {
+    private Camera2D _camera;
+
     private Enemy _enemy;
 
     private SpriteFont _fontPixel;
@@ -26,6 +29,8 @@ public class GameScene : Scene
     {
         base.Initialize();
 
+        _camera = new Camera2D();
+
         var infoTextYOrigin = _fontPixel.MeasureString("Health").Y * 0.5f;
 
         _gameInfoTextPosition = new Vector2(32, 32);
@@ -40,7 +45,7 @@ public class GameScene : Scene
         var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
-        _enemy = new Enemy(enemySprite, new Vector2(600, 380), false);
+        _enemy = new Enemy(enemySprite, new Vector2(600, 380));
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -79,6 +84,12 @@ public class GameScene : Scene
         _player.Update(gameTime, screenBounds);
         _enemy.Update(gameTime, screenBounds);
 
+        // Camera follow
+        _camera.Position = _player.Position - new Vector2(
+            Core.Graphics.GraphicsDevice.Viewport.Width / 2,
+            Core.Graphics.GraphicsDevice.Viewport.Height / 2
+        );
+
         if (_player.Collider.Intersects(_enemy.Collider)) _player.HandleEntityCollision(_enemy.Collider);
 
         base.Update(gameTime);
@@ -86,7 +97,10 @@ public class GameScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        SpriteBatch.Begin(
+            samplerState: SamplerState.PointClamp,
+            transformMatrix: _camera.GetViewMatrix()
+        );
 
         _world.Draw(SpriteBatch);
 

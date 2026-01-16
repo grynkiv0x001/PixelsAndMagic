@@ -31,8 +31,13 @@ public class Player
         Position = position;
     }
 
-    public Player(AnimatedSprite playerSprite, InputManager inputManager, Vector2 startPosition, float baseHealth,
-        float baseDamage)
+    public Player(
+        AnimatedSprite playerSprite,
+        InputManager inputManager,
+        Vector2 startPosition,
+        float baseHealth,
+        float baseDamage
+    )
     {
         _playerSprite = playerSprite;
         _inputManager = inputManager;
