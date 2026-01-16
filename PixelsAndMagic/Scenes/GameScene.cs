@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelsAndMagic.Entities;
+using PixelsAndMagic.GameWorld;
 
 namespace PixelsAndMagic.Scenes;
 
@@ -13,7 +14,7 @@ public class GameScene : Scene
 {
     private Camera2D _camera;
 
-    private World.World _world;
+    private World _world;
 
     public override void Initialize()
     {
@@ -45,11 +46,11 @@ public class GameScene : Scene
 
         var player = new Player(playerSprite, Core.InputManager, new Vector2(200, 200), 100.0f, 20.0f);
 
-        // World loading (using the Tilemap)
+        // GameWorld loading (using the Tilemap)
         var world = Tilemap.FromFile(Content, "Images/world-tilemap.xml");
         world.Scale = new Vector2(4.0f, 4.0f);
 
-        _world = new World.World(world, player, [enemy]);
+        _world = new World(world, player, [enemy]);
     }
 
     public override void Update(GameTime gameTime)

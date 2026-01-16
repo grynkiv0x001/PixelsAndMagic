@@ -1,25 +1,21 @@
 using System.Collections.Generic;
-using System.Linq;
 using GameLibrary.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelsAndMagic.Entities;
 
-namespace PixelsAndMagic.World;
+namespace PixelsAndMagic.GameWorld;
 
-public class World
+public class Area
 {
-    // TODO: Promote to entities & add an Entity base class
     private readonly List<Enemy> _enemies = [];
+    private readonly List<Trigger> _triggers = [];
 
-    public World(Tilemap tilemap, Player player, IEnumerable<Enemy> enemies)
+    public Area(Tilemap tilemap)
     {
         Tilemap = tilemap;
-        Player = player;
 
-        _enemies.AddRange(enemies);
-
-        Bounds = new Rectangle(
+        GameplayBounds = new Rectangle(
             (int)tilemap.TileWidth,
             (int)tilemap.TileHeight,
             (int)(tilemap.Columns * tilemap.TileWidth) - (int)tilemap.TileWidth * 2,
@@ -27,33 +23,33 @@ public class World
         );
     }
 
-    public Player Player { get; }
     public Tilemap Tilemap { get; }
+    public Rectangle GameplayBounds { get; }
 
-    public Rectangle Bounds { get; }
-
-    public void Update(GameTime gameTime)
+    public void AddEnemy(Enemy enemy)
     {
-        Player.Update(gameTime, Bounds);
+        _enemies.Add(enemy);
+    }
 
+    public void AddTrigger(Trigger trigger)
+    {
+        _triggers.Add(trigger);
+    }
+
+    public void Update(GameTime gameTime, Player player)
+    {
         foreach (var enemy in _enemies)
-            enemy.Update(gameTime, Bounds);
+            enemy.Update(gameTime, GameplayBounds);
 
-        HandleCollisions();
+        foreach (var trigger in _triggers)
+            trigger.Update(player);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         Tilemap.Draw(spriteBatch);
-        Player.Draw(spriteBatch);
 
         foreach (var enemy in _enemies)
             enemy.Draw(spriteBatch);
-    }
-
-    public void HandleCollisions()
-    {
-        foreach (var enemy in _enemies.Where(enemy => Player.Collider.Intersects(enemy.Collider)))
-            Player.HandleEntityCollision(enemy.Collider);
     }
 }
