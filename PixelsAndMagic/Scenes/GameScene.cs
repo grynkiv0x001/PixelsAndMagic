@@ -2,11 +2,15 @@ using GameLibrary;
 using GameLibrary.Graphics;
 using GameLibrary.Scenes;
 using GameLibrary.Utilities;
+using Gum.Forms.Controls;
+using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameGum;
 using PixelsAndMagic.Entities;
 using PixelsAndMagic.GameWorld;
+using RenderingLibrary;
 
 namespace PixelsAndMagic.Scenes;
 
@@ -14,11 +18,28 @@ public class GameScene : Scene
 {
     private Camera2D _camera;
 
+    private Panel _debugPanel;
+    private Label _fpsCounter;
+
     private World _world;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        _debugPanel = new Panel();
+        _debugPanel.AddToRoot();
+        _debugPanel.Anchor(Anchor.TopLeft);
+
+        _fpsCounter = new Label
+        {
+            Text = "FPS: 0",
+            X = 10,
+            Y = 10,
+            IsVisible = false
+        };
+
+        _debugPanel.AddChild(_fpsCounter);
 
         // BoundaryPadding is the wall thickness 
         _camera = new Camera2D
@@ -58,6 +79,10 @@ public class GameScene : Scene
         if (Core.InputManager.Keyboard.IsKeyPressed(Keys.Escape))
             Core.PushScene(new PauseScene());
 
+        if (Core.InputManager.Keyboard.IsKeyPressed(Keys.F1)) _fpsCounter.IsVisible = !_fpsCounter.IsVisible;
+
+        _fpsCounter.Text = ((int)Core.FrameCounter.CurrentFramesPerSecond).ToString();
+
         _world.Update(gameTime);
 
         // Camera follow
@@ -79,6 +104,8 @@ public class GameScene : Scene
         _world.Draw(SpriteBatch);
 
         SpriteBatch.End();
+
+        SystemManagers.Default.Draw();
 
         base.Draw(gameTime);
     }
