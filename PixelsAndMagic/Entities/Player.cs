@@ -1,9 +1,11 @@
+using System;
 using GameLibrary.Graphics;
 using GameLibrary.Input;
 using GameLibrary.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace PixelsAndMagic.Entities;
 
@@ -58,15 +60,14 @@ public class Player
         _playerSprite.Width * 0.5f
     );
 
+    public event Action<Vector2, Vector2> FireRequested;
+
     public void Update(GameTime gameTime, Rectangle screenBounds)
     {
         HandleKeyboardInput();
         HandleCollision(screenBounds);
 
-        if (_isReversed)
-            _playerSprite.Effects = SpriteEffects.FlipHorizontally;
-        else
-            _playerSprite.Effects = SpriteEffects.None;
+        _playerSprite.Effects = _isReversed ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
         _playerSprite.Update(gameTime);
     }
@@ -150,5 +151,12 @@ public class Player
         if (_inputManager.Keyboard.IsKeyReleased(Keys.Up) || _inputManager.Keyboard.IsKeyReleased(Keys.Down) ||
             _inputManager.Keyboard.IsKeyReleased(Keys.Left) || _inputManager.Keyboard.IsKeyReleased(Keys.Right))
             _isMoving = false;
+
+        if (_inputManager.Keyboard.IsKeyReleased(Keys.Space) || _inputManager.Keyboard.IsKeyReleased(Keys.F))
+        {
+            var direction = _isReversed ? -Vector2.UnitX : Vector2.UnitX;
+
+            FireRequested?.Invoke(Position, direction);
+        }
     }
 }

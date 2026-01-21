@@ -9,8 +9,11 @@ namespace PixelsAndMagic.Entities;
 public class Enemy
 {
     private const float MOVEMENT_SPEED = 5.0f;
+    private const float HIT_FLASH_DURATION = 0.2f;
 
     private readonly AnimatedSprite _enemySprite;
+
+    private float _hitFlashTimer;
 
     private bool _isMoving;
 
@@ -37,6 +40,8 @@ public class Enemy
 
     public Vector2 Position { get; set; }
     public Vector2 Velocity { get; set; }
+
+    public Color Tint { get; set; } = Color.White;
 
     public float Health { get; set; }
     public float BaseDamage { get; set; }
@@ -88,12 +93,29 @@ public class Enemy
 
         Position = newPosition;
 
+        if (_hitFlashTimer > 0f)
+        {
+            _hitFlashTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Tint = Color.IndianRed;
+        }
+        else
+        {
+            Tint = Color.White;
+        }
+
         _enemySprite.Update(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _enemySprite.Draw(spriteBatch, Position);
+        _enemySprite.Draw(spriteBatch, Position, Tint);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Health -= damage;
+
+        _hitFlashTimer = HIT_FLASH_DURATION;
     }
 
     private void AssignRandomVelocity()

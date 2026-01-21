@@ -58,6 +58,7 @@ public class GameScene : Scene
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
         var enemy = new Enemy(enemySprite, new Vector2(600, 380));
+        var standingEnemy = new Enemy(enemySprite, new Vector2(300, 300), false);
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -67,11 +68,29 @@ public class GameScene : Scene
 
         var player = new Player(playerSprite, Core.InputManager, new Vector2(200, 200), 100.0f, 20.0f);
 
+        var fireballSheet = SpriteSheet.FromFile(Content, "Images/projectiles.xml");
+
         // GameWorld loading (using the Tilemap)
         var world = Tilemap.FromFile(Content, "Images/world-tilemap.xml");
         world.Scale = new Vector2(4.0f, 4.0f);
 
-        _world = new World(world, player, [enemy]);
+        _world = new World(world, player, [enemy, standingEnemy]);
+
+        _world.Player.FireRequested += (position, direction) =>
+        {
+            var projectileSprite = fireballSheet.CreateSprite("Fireball");
+            projectileSprite.Scale = new Vector2(4.0f, 4.0f);
+
+            var fireball = new Projectile(
+                projectileSprite,
+                position + new Vector2(32, 16),
+                direction * 10.0f,
+                _world.Player.BaseDamage,
+                direction.X < 0
+            );
+
+            _world.ProjectileSystem.SpawnProjectile(fireball);
+        };
     }
 
     public override void Update(GameTime gameTime)
