@@ -61,13 +61,13 @@ public class World
         ProjectileSystem.Draw(spriteBatch);
     }
 
-    public void HandleCollisions()
+    private void HandleCollisions()
     {
         foreach (var enemy in _enemies.Where(enemy => Player.Collider.Intersects(enemy.Collider)))
             Player.HandleEntityCollision(enemy.Collider);
     }
 
-    public void HandleProjectileEnemyCollision()
+    private void HandleProjectileEnemyCollision()
     {
         foreach (var projectile in ProjectileSystem.Projectiles)
         {

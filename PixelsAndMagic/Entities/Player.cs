@@ -60,7 +60,9 @@ public class Player
         _playerSprite.Width * 0.5f
     );
 
-    public event Action<Vector2, Vector2> FireRequested;
+    public SpellType ActiveSpell { get; private set; } = SpellType.Fireball;
+
+    public event Action<Vector2, Vector2, SpellType> FireRequested;
 
     public void Update(GameTime gameTime, Rectangle screenBounds)
     {
@@ -152,11 +154,17 @@ public class Player
             _inputManager.Keyboard.IsKeyReleased(Keys.Left) || _inputManager.Keyboard.IsKeyReleased(Keys.Right))
             _isMoving = false;
 
+        if (_inputManager.Keyboard.IsKeyPressed(Keys.Q))
+            ActiveSpell = SpellType.Fireball;
+
+        if (_inputManager.Keyboard.IsKeyPressed(Keys.W))
+            ActiveSpell = SpellType.Frostball;
+
         if (_inputManager.Keyboard.IsKeyReleased(Keys.Space) || _inputManager.Keyboard.IsKeyReleased(Keys.F))
         {
             var direction = _isReversed ? -Vector2.UnitX : Vector2.UnitX;
 
-            FireRequested?.Invoke(Position, direction);
+            FireRequested?.Invoke(Position, direction, ActiveSpell);
         }
     }
 }

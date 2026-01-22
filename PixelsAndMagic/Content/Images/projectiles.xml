@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas>
-    <Texture>images/simple-fireball</Texture>
+    <Texture>images/projectiles</Texture>
     <Regions>
-        <Region name="Fireball" x="0" y="0" width="8" height="8" />
+        <Region name="Fireball" x="0" y="0" width="8" height="8"/>
+        <Region name="Frostball" x="8" y="0" width="8" height="8"/>
     </Regions>
 </TextureAtlas>
 

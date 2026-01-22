@@ -51,10 +51,7 @@
 #begin Images/player-spritesheet.xml
 /copy:Images/player-spritesheet.xml
 
-#begin Images/projectiles.xml
-/copy:Images/projectiles.xml
-
-#begin Images/simple-fireball.png
+#begin Images/projectiles.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -64,7 +61,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/simple-fireball.png
+/build:Images/projectiles.png
+
+#begin Images/projectiles.xml
+/copy:Images/projectiles.xml
 
 #begin Images/wizard-sheet.png
 /importer:TextureImporter
