@@ -20,7 +20,6 @@ public class SettingsScene : Scene
 
     private Vector2 _settingsTextOrigin;
     private Vector2 _settingsTextPosition;
-
     private StackPanel _stackPanel;
 
     public override void Initialize()
@@ -41,21 +40,26 @@ public class SettingsScene : Scene
         _stackPanel.AddToRoot();
         _stackPanel.Anchor(Anchor.Center);
         _stackPanel.Spacing = 10;
+        _stackPanel.MaxWidth = 200;
 
-        var isMusicMuted = Core.AudioController.IsMuted;
-
-        var muteMusicButton = new Button();
+        var toggleMusicButton = new Button();
         var backButton = new Button();
 
-        _stackPanel.AddChild(muteMusicButton);
+        _stackPanel.AddChild(toggleMusicButton);
         _stackPanel.AddChild(backButton);
 
-        muteMusicButton.Text = $"{(isMusicMuted ? "Unmute" : "Mute")} the Music";
-        muteMusicButton.IsFocused = true;
-        muteMusicButton.Click += (_, _) =>
+        toggleMusicButton.Text = $"{(Core.AudioController.IsMuted ? "Unmute" : "Mute")} the Music";
+        toggleMusicButton.IsFocused = true;
+        toggleMusicButton.Width = 180;
+        toggleMusicButton.Click += (_, _) =>
+        {
             Core.AudioController.ToggleMute();
 
+            toggleMusicButton.Text = $"{(Core.AudioController.IsMuted ? "Unmute" : "Mute")} the Music";
+        };
+
         backButton.Text = "Go back";
+        backButton.Width = 180;
         backButton.Click += (_, _) =>
         {
             Core.PopScene();

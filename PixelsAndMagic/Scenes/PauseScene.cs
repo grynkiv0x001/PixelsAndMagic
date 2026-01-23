@@ -41,6 +41,7 @@ public class PauseScene : Scene
         _stackPanel.AddToRoot();
         _stackPanel.Anchor(Anchor.Center);
         _stackPanel.Spacing = 10;
+        _stackPanel.MaxWidth = 200;
 
         var resumeButton = new Button();
         var settingsButton = new Button();
@@ -52,10 +53,12 @@ public class PauseScene : Scene
 
         resumeButton.Text = "Resume the game";
         resumeButton.IsFocused = true;
+        resumeButton.Width = 180;
         resumeButton.Click += (_, _) =>
             Core.PopScene();
 
         settingsButton.Text = "Game settings";
+        settingsButton.Width = 180;
         settingsButton.Click += (_, _) =>
         {
             Core.PopScene();
@@ -63,6 +66,7 @@ public class PauseScene : Scene
         };
 
         exitButton.Text = "Exit the game";
+        exitButton.Width = 180;
         exitButton.Click += (_, _) =>
             Core.ExitGame();
     }

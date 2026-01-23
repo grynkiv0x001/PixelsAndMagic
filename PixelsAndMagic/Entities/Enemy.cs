@@ -6,13 +6,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelsAndMagic.Entities;
 
+public enum EnemyState
+{
+    Alive,
+    Dying,
+    Dead
+}
+
 public class Enemy
 {
     private const float MOVEMENT_SPEED = 5.0f;
     private const float HIT_FLASH_DURATION = 0.2f;
+    private const float DYING_DURATION = 0.25f;
 
     private readonly AnimatedSprite _enemySprite;
 
+    private float _dyingTimer;
     private float _hitFlashTimer;
 
     private bool _isMoving;
@@ -46,11 +55,15 @@ public class Enemy
     public float Health { get; set; }
     public float BaseDamage { get; set; }
 
+    public EnemyState State { get; private set; } = EnemyState.Alive;
+
     public Circle Collider => new(
         Position.X + _enemySprite.Width * 0.5f,
         Position.Y + _enemySprite.Height * 0.5f,
         _enemySprite.Width * 0.5f
     );
+
+    public event Action<Enemy> OnDeath;
 
     public void Update(GameTime gameTime, Rectangle screenBounds)
     {
@@ -93,7 +106,20 @@ public class Enemy
 
         Position = newPosition;
 
-        if (_hitFlashTimer > 0f)
+        if (State == EnemyState.Dying)
+        {
+            var alpha = _dyingTimer / DYING_DURATION;
+
+            // Stop movement
+            Velocity = Vector2.Zero;
+
+            _dyingTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Tint = Color.Gray * alpha;
+
+            if (_dyingTimer <= 0f)
+                State = EnemyState.Dead;
+        }
+        else if (_hitFlashTimer > 0f)
         {
             _hitFlashTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             Tint = Color.IndianRed;
@@ -102,6 +128,9 @@ public class Enemy
         {
             Tint = Color.White;
         }
+
+        if (Health <= 0 && State == EnemyState.Alive)
+            Die();
 
         _enemySprite.Update(gameTime);
     }
@@ -116,6 +145,14 @@ public class Enemy
         Health -= damage;
 
         _hitFlashTimer = HIT_FLASH_DURATION;
+    }
+
+    private void Die()
+    {
+        State = EnemyState.Dying;
+        _dyingTimer = DYING_DURATION;
+
+        OnDeath?.Invoke(this);
     }
 
     private void AssignRandomVelocity()

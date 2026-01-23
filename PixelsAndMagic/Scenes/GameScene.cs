@@ -71,8 +71,12 @@ public class GameScene : Scene
         var enemySprite = enemySheet.CreateAnimatedSprite("enemy-animation");
         enemySprite.Scale = new Vector2(4.0f, 4.0f);
 
-        var enemy = new Enemy(enemySprite, new Vector2(600, 380));
-        var standingEnemy = new Enemy(enemySprite, new Vector2(300, 300), false);
+        var ratSprite = enemySheet.CreateAnimatedSprite("rat-animation");
+        ratSprite.Scale = new Vector2(4.0f, 4.0f);
+
+        var enemy = new Enemy(ratSprite, new Vector2(600, 380), 80f, 20f);
+        var standingEnemy = new Enemy(enemySprite, new Vector2(300, 300), 100f, 15f, false);
+        var rat1 = new Enemy(ratSprite, new Vector2(300, 400), 60f, 10f, false);
 
         // Player (Wizard) sprite loading
         var playerSheet = SpriteSheet.FromFile(Content, "Images/player-spritesheet.xml");
@@ -93,7 +97,7 @@ public class GameScene : Scene
         var world = Tilemap.FromFile(Content, "Images/world-tilemap.xml");
         world.Scale = new Vector2(4.0f, 4.0f);
 
-        _world = new World(world, player, [enemy, standingEnemy]);
+        _world = new World(world, player, [enemy, standingEnemy, rat1]);
 
         _world.Player.FireRequested += (position, direction, activeSpell) =>
         {

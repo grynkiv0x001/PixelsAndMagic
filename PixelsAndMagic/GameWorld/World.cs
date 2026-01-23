@@ -41,13 +41,14 @@ public class World
     {
         Player.Update(gameTime, Bounds);
 
-        foreach (var enemy in _enemies)
-            enemy.Update(gameTime, Bounds);
+        foreach (var enemy in _enemies) enemy.Update(gameTime, Bounds);
 
         ProjectileSystem.Update(gameTime);
 
         HandleCollisions();
         HandleProjectileEnemyCollision();
+
+        RemoveDead();
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -87,5 +88,10 @@ public class World
                 break;
             }
         }
+    }
+
+    private void RemoveDead()
+    {
+        _enemies.RemoveAll(enemy => enemy.State == EnemyState.Dead);
     }
 }

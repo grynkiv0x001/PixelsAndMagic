@@ -33,7 +33,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Jacquard_12.spritefont
 
-#begin Images/enemy-sheet.png
+#begin Images/enemies-spritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -43,7 +43,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/enemy-sheet.png
+/build:Images/enemies-spritesheet.png
 
 #begin Images/enemy-spritesheet.xml
 /copy:Images/enemy-spritesheet.xml
