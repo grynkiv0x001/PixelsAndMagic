@@ -13,6 +13,15 @@ public enum EnemyState
     Dead
 }
 
+public enum Direction
+{
+    None,
+    Left,
+    Right,
+    Up,
+    Down
+}
+
 public class Enemy
 {
     private const float MOVEMENT_SPEED = 5.0f;
@@ -56,6 +65,8 @@ public class Enemy
     public float BaseDamage { get; set; }
 
     public EnemyState State { get; private set; } = EnemyState.Alive;
+
+    public Direction Facing { get; private set; } = Direction.Right;
 
     public Circle Collider => new(
         Position.X + _enemySprite.Width * 0.5f,
@@ -106,6 +117,8 @@ public class Enemy
 
         Position = newPosition;
 
+        if (State == EnemyState.Alive && Velocity != Vector2.Zero) Facing = DirectionFromVelocity(Velocity);
+
         if (State == EnemyState.Dying)
         {
             var alpha = _dyingTimer / DYING_DURATION;
@@ -131,6 +144,22 @@ public class Enemy
 
         if (Health <= 0 && State == EnemyState.Alive)
             Die();
+
+        switch (Facing)
+        {
+            case Direction.Right:
+                _enemySprite.Effects = SpriteEffects.None;
+                break;
+            case Direction.Left:
+                _enemySprite.Effects = SpriteEffects.FlipHorizontally;
+                break;
+            case Direction.None:
+            case Direction.Up:
+            case Direction.Down:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
 
         _enemySprite.Update(gameTime);
     }
@@ -165,5 +194,16 @@ public class Enemy
         var direction = new Vector2(x, y);
 
         Velocity = Vector2.Normalize(direction) * MOVEMENT_SPEED;
+    }
+
+    private Direction DirectionFromVelocity(Vector2 velocity)
+    {
+        if (velocity == Vector2.Zero)
+            return Direction.None;
+
+        if (Math.Abs(velocity.X) > Math.Abs(velocity.Y))
+            return velocity.X > 0 ? Direction.Right : Direction.Left;
+
+        return velocity.Y > 0 ? Direction.Down : Direction.Up;
     }
 }
